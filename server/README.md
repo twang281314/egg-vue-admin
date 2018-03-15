@@ -47,4 +47,3 @@ $ npm stop
 - app/service/** 用于编写业务逻辑层。
 - app/public/** 用于放置静态资源。
 - app/model/** 用于放置sequelize相关模型。
-- app/migrate/** 用于放置sequelize-cli相关数据库迁移文件

@@ -7,6 +7,8 @@
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.2",
+    "lodash": "^4.17.5",
+    "md5": "^2.2.1",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.2",
     "sequelize-cli": "^4.0.0"
