@@ -9,6 +9,6 @@ exports.sequelize = {
   host: 'anytao.net',
   port: '3306',
   username: 'root',
-  password: '',
+  password: 'bnm6714420',
   timezone : "+08:00"
 };
