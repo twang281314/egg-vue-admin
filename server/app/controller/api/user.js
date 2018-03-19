@@ -32,6 +32,11 @@ class UserController extends Controller {
         this.ctx.body = respponse;
     }
 
+    async list(){
+        const users = await this.ctx.service.user.list();
+        this.ctx.body = this.ServerResponse.createBySuccessMsgAndData('获取成功',users);
+    }
+
 }
 
 module.exports = UserController;

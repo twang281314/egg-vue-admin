@@ -5,7 +5,9 @@
   "private": true,
   "dependencies": {
     "egg": "^2.2.1",
+    "egg-cors": "^2.0.0",
     "egg-scripts": "^2.5.0",
+    "egg-security": "^2.1.0",
     "egg-sequelize": "^3.1.2",
     "lodash": "^4.17.5",
     "md5": "^2.2.1",

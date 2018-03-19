@@ -55,6 +55,11 @@ class UserService extends Service {
             return this.ServerResponse.createByErrorMsg('注册失败');
         }
     }
+
+    async list(){
+        const users = await this.ctx.model.User.findAll();
+        return users;
+    }
 }
 
 module.exports = UserService;

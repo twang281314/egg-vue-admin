@@ -12,7 +12,14 @@ module.exports = appInfo => {
   config.security = {
     csrf: {
       enable: false,
-    },
+    }
+  };
+
+  config.cors = {
+     origin: 'http://127.0.0.1:8081',
+     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+     credentials:true,
+     //allowHeaders :'Authorization,DNT,User-Agent,Keep-Alive,Content-Type,accept,origin,X-Requested-With'
   };
 
   return config;
