@@ -37,12 +37,6 @@ export const page500 = {
     component: () => import('@/views/error-page/500.vue')
 };
 
-export const preview = {
-    path: '/preview',
-    name: 'preview',
-    component: () => import('@/views/form/article-publish/preview.vue')
-};
-
 export const locking = {
     path: '/locking',
     name: 'locking',
@@ -75,18 +69,6 @@ export const appRouter = [
         children: [
             { path: 'user_list', title: '用户列表', name: 'user_list', component: () => import('@/views/system/user/list.vue') },
             { path: 'role_list', title: '角色列表', name: 'role_list', component: () => import('@/views/system/role/list.vue') },
-        ]
-    },
-    {
-        path: '/form',
-        icon: 'android-checkbox',
-        name: 'form',
-        title: '表单编辑',
-        component: Main,
-        children: [
-            { path: 'artical-publish', title: '文章发布', name: 'article-publish', icon: 'compose', component: () => import('@/views/form/article-publish/article-publish.vue') },
-            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') }
-
         ]
     },
     {
@@ -130,7 +112,6 @@ export const appRouter = [
 export const routers = [
     loginRouter,
     otherRouter,
-    preview,
     locking,
     ...appRouter,
     page500,

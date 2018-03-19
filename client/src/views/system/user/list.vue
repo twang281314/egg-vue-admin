@@ -12,7 +12,7 @@
           <Select v-model="formSearch.type" placeholder="请选择" style="width:90px">
             <Option value="">请选择</Option>
             <Option value="1">帐号</Option>
-            <Option value="2">联系人</Option>
+            <Option value="2">姓名</Option>
             <Option value="3">手机号码</Option>
             <Option value="4">邮箱</Option>
           </Select>
@@ -51,6 +51,41 @@
     <Row type="flex" justify="end">
       <Page :total="total" :page-size="pageSize" :current="pageNumber" show-total show-elevator @on-change="changePage"></Page>
     </Row>
+     <!--添加 Modal 对话框-->
+    <Modal v-model="addModal" title="添加用户" class-name="customize-modal-center" @on-cancel="modalCancel()">
+      <div>
+        <Form ref="addForm" :model="addForm"  :label-width="80">
+          <Form-item label="帐号" prop="account">
+            <Input v-model="addForm.account" placeholder="请填写帐号"></Input>
+          </Form-item>
+          <Form-item label="密码" prop="password">
+            <Input type="password" v-model="addForm.password" placeholder="请填写密码(留空将不会修改密码)"></Input>
+          </Form-item>
+          <Form-item label="姓名" prop="realName">
+            <Input v-model="addForm.realName" placeholder="请填写姓名"></Input>
+          </Form-item>
+          <Form-item label="手机号" prop="mobile">
+            <Input v-model="addForm.mobile" placeholder="请填写手机号"></Input>
+          </Form-item>
+          <Form-item label="邮箱" prop="email">
+            <Input v-model="addForm.email" placeholder="请填写邮箱"></Input>
+          </Form-item>
+          <Form-item label="状态" prop="status">
+            <Radio-group v-model="addForm.status">
+              <Radio label="1">正常</Radio>
+              <Radio label="0">锁定</Radio>
+            </Radio-group>
+          </Form-item>
+          <Form-item label="备注说明" prop="desc">
+            <Input v-model="addForm.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="200字说明备注..."></Input>
+          </Form-item>
+        </Form>
+      </div>
+      <div slot="footer">
+        <Button type="primary" @click="addSubmit('addForm')">提交</Button>
+        <Button type="ghost" @click="handleReset('addForm')" style="margin-left: 8px">重置</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -61,27 +96,22 @@ export default {
       return {
           columns: [
           {
-            title: 'ID',
-            key: 'id',
-            width: 60
-          },
-          {
             title: '帐号',
-            key: 'account',
+            key: 'username',
             width: 120
           },
           {
             title: '用户角色',
-            key: 'roleName'
+            key: 'rolename'
           },
           {
-            title: '联系人',
-            key: 'realName',
+            title: '姓名',
+            key: 'realname',
             width: 130
           },
           {
             title: '手机号',
-            key: 'mobile',
+            key: 'phone',
             align: 'center',
             width: 120
           },
@@ -98,8 +128,8 @@ export default {
             align: 'center',
             render: (h, params) => {
               const row = params.row;
-              const color = row.status === '1' ? 'green' : row.status === '0' ? 'yellow' : 'red';
-              const text = row.status === '1' ? '正常' : row.status === '0' ? '锁定' : '删除';
+              const color = row.status === 1 ? 'green' : row.status === 0 ? 'yellow' : 'red';
+              const text = row.status === 1? '正常' : row.status === 0 ? '锁定' : '删除';
               return h('Tag', {
                 props: {
                   type: 'dot',
@@ -193,52 +223,57 @@ export default {
         pageSize: 1,
         //当前页码
         pageNumber: 1,
+        //添加表单
+        addForm: {
+          account: '',
+          password: '',
+          roleId: '',
+          mobile: '',
+          email: '',
+          status: 1,
+          realName: '',
+          desc: '',
+          avatarId: '',
+          avatarUrl: ''
+        },
          //搜索表单
-        formSearch: {}
+        formSearch: {},
+        //新增modal
+        addModal:false
       };
     },
 
     methods: {
         getData (params) {
-          this.list=[{
-            "id": "2",
-            "account": "test",
-            "roleId": "1",
-            "avatarId": "0",
-            "avatarUrl": "",
-            "realName": "测试人员",
-            "mobile": "15025302861",
-            "email": "",
-            "status": "1",
-            "desc": "好人呀!!",
-            "loginCount": "0",
-            "lastLoginIp": "0",
-            "lastLoginTime": "0",
-            "createTime": "1493623443",
-            "updateTime": "1493623443",
-            "roleName": "技术开发"
-          }, {
-            "id": "1",
-            "account": "admin",
-            "roleId": "1",
-            "avatarId": "17",
-            "avatarUrl": "https:\/\/oss.life.dev.yongchuan.cc\/manage\/user\/avatar\/2018-01-11\/amn2.jpg",
-            "realName": "何先生",
-            "mobile": "15025302861",
-            "email": "myxingke@126.com",
-            "status": "1",
-            "desc": "超级用户哟",
-            "loginCount": "308",
-            "lastLoginIp": "119.29.197.80",
-            "lastLoginTime": "1521193424",
-            "createTime": "1493446475",
-            "updateTime": "1516424055",
-            "roleName": "技术开发"
-          }]
+          this.request('UserList', params, true).then((res) => {
+            console.log(res);
+            this.list= res.data;
+        });
         },
         changePage(){
 
-        }
+        },
+        //重置表单数据
+        handleReset (name) {
+          this.$refs[name].resetFields();
+        },
+        //保存数据方法
+        save(url, data) {
+        this.request(url, data).then((res) => {
+          if (res.status) {
+            this.addModal = false;
+            this.editModal = false;
+            this.$Message.success(res.msg);
+            //重置数据
+            this.$refs['addForm'].resetFields();
+            this.$refs['editForm'].resetFields();
+            //重新拉取服务端数据
+            this.getData();
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+      }
     },
     mounted(){
       this.getData();

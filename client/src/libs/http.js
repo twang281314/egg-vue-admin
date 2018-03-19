@@ -1,5 +1,5 @@
 
-// import methodMap from './apiMap';
+import methodMap from './apiMap';
 import AsInst from './axios';
 import {Message} from 'iview';
 class Http {
@@ -13,8 +13,7 @@ Http.install = function (Vue) {
    * @returns {string}
    */
   Vue.prototype.request = function (method, opts, toast) {
-    // let m = methodMap[method];
-    let m = '';
+    let m = methodMap[method];
     if (m) {
       let optsType = typeof (opts);
       if (optsType === null || optsType !== 'object') {

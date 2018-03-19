@@ -12,9 +12,11 @@ import util from './libs/util';
 import Http from './libs/http';
 import Util from './libs/util';
 import Plugin from './libs/plugin/index';
+import Toast from './libs/toast/';
 
 Vue.use(VueI18n);
 Vue.use(iView);
+Vue.use(Toast);
 Vue.use(Http);
 Vue.use(Plugin);
 
