@@ -72,18 +72,21 @@ export const appRouter = [
         ]
     },
     {
-        path: '/tables',
-        icon: 'ios-grid-view',
-        name: 'tables',
-        title: '表格',
+        path: '/example',
+        icon: 'android-sad',
+        title: '综合样例',
+        name: 'example',
         component: Main,
-        children: [
-            { path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move', component: () => import('@/views/tables/dragable-table.vue') },
-            { path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit', component: () => import('@/views/tables/editable-table.vue') },
-            { path: 'searchableTable', title: '可搜索表格', name: 'searchable-table', icon: 'search', component: () => import('@/views/tables/searchable-table.vue') },
-            { path: 'exportableTable', title: '表格导出数据', name: 'exportable-table', icon: 'code-download', component: () => import('@/views/tables/exportable-table.vue') },
-            { path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images', component: () => import('@/views/tables/table-to-image.vue') }
-        ]
+        children: [{
+          path: 'table',
+          title: '表格',
+          name: 'table',
+          component: () =>import ('@/views/example/table/index.vue'),
+          children:[
+            { path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit', component: () => import('@/views/example/table/editable-table.vue') },
+            { path: 'searchableTable', title: '可搜索表格', name: 'searchable-table', icon: 'search', component: () => import('@/views/example/table/searchable-table.vue') },
+          ]
+        }]
     },
     {
         path: '/advanced-router',

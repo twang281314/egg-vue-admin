@@ -4,22 +4,34 @@
 
 <template>
     <Menu ref="sideMenu" :active-name="$route.name" :open-names="openNames" :theme="menuTheme" width="auto" @on-select="changeMenu">
-        <template v-for="item in menuList">
-            <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
+         <template v-for="item in menuList">
+            <MenuItem v-if="item.children.length<=1&&!item.children[0].children" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <Icon :type="item.children[0].icon || item.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
                 <span class="layout-text" :key="'title' + item.name">{{ itemTitle(item.children[0]) }}</span>
             </MenuItem>
 
-            <Submenu v-if="item.children.length > 1" :name="item.name" :key="item.name">
+            <Submenu v-if="item.children.length > 1 ||(item.children.length==1&&item.children[0].children)" :name="item.name" :key="item.name">
                 <template slot="title">
                     <Icon :type="item.icon" :size="iconSize"></Icon>
                     <span class="layout-text">{{ itemTitle(item) }}</span>
                 </template>
                 <template v-for="child in item.children">
-                    <MenuItem :name="child.name" :key="'menuitem' + child.name">
+                    <MenuItem v-if="!child.children" :name="child.name" :key="'menuitem' + child.name">
                         <Icon :type="child.icon" :size="iconSize" :key="'icon' + child.name"></Icon>
                         <span class="layout-text" :key="'title' + child.name">{{ itemTitle(child) }}</span>
                     </MenuItem>
+                     <Submenu v-if="child.children" :name="child.name" :key="child.name">
+                           <template slot="title">
+                            <Icon :type="child.icon" :size="iconSize"></Icon>
+                            <span class="layout-text">{{ itemTitle(child) }}</span>
+                           </template>
+                           <template v-for="childItem in child.children">
+                             <MenuItem :name="childItem.name" :key="'menuitem'+childItem.name">
+                               <Icon :type="childItem.icon" :size="iconSize" :key="'icon' + childItem.name"></Icon>
+                               <span class="layout-text" :key="'title' + childItem.name">{{ itemTitle(childItem) }}</span>
+                             </MenuItem>
+                           </template>
+                     </Submenu>
                 </template>
             </Submenu>
         </template>
