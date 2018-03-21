@@ -1,5 +1,5 @@
-
 import util from '../libs/util';
+import Mock from 'mockjs'
 
 const userMap = {
   admin: {
@@ -20,19 +20,27 @@ const userMap = {
 
 export default {
   loginByUsername: config => {
-    const { username } = JSON.parse(config.body)
+    const {
+      username
+    } = JSON.parse(config.body)
     return userMap[username]
   },
   getUserInfo: config => {
-    debugger;
-    const { token } = util.param2Obj(config.url)
+    let result = {
+      code: 200,
+      data: null,
+      msg: '获取成功',
+      time: new Date()
+    }
+    const {
+      token
+    } = util.param2Obj(config.url)
     if (userMap[token]) {
-      return userMap[token]
+      result.data = userMap[token];
+      return result;
     } else {
       return false
     }
   },
   logout: () => 'success'
 }
-
-
