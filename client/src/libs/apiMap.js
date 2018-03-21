@@ -14,5 +14,7 @@ const methodMap = {
   /** 重置后台用户密码 **/
   RestPassword: {url: '/api/user/rest_password', method: 'post'},
 
+  UserInfo:{ url:'/api/user/info',method:'get'}
+
 };
 export default methodMap;

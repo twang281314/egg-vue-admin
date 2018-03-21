@@ -13,6 +13,11 @@
         },
         mounted () {
 
+            this.request('UserInfo', {token:'admin'}, true).then((res) => {
+                debugger;
+            console.log(res);
+            });
+
         },
         beforeDestroy () {
 

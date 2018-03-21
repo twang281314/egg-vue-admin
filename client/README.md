@@ -64,3 +64,4 @@ npm run build
 - [Vuex](https://vuex.vuejs.org/zh-cn/) 管理Vue中多组件共享状态的插件，类似react的redux
 - [Axios](https://github.com/mzabriskie/axios) 当前最流行的一个http库
 - [iView](https://www.iviewui.com/) 基于Vue的一套UI组件库
+- [Mock.js](http://mockjs.com/) 生成随机数据，拦截 Ajax 请求 让前端攻城师独立于后端进行开发
