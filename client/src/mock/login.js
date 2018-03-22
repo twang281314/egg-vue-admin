@@ -1,5 +1,6 @@
-import util from '../libs/util';
-import Mock from 'mockjs'
+
+const util  = require('../libs/util');
+const Mock = require('mockjs');
 
 const userMap = {
   admin: {
@@ -18,7 +19,7 @@ const userMap = {
   }
 }
 
-export default {
+module.exports =  {
   loginByUsername: config => {
     const {
       username

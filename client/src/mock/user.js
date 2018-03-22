@@ -1,4 +1,4 @@
-import Mock from 'mockjs'
+const Mock = require('mockjs');
 
 const list = [];
 const count = 50;
@@ -26,17 +26,18 @@ let usersListData = Mock.mock({
   }, ],
 })
 
-export default {
-  getUserList: config => {
-
-    let result = {
-      code: 200,
-      data: null,
-      msg: '获取成功',
-      time: new Date()
-    }
-
-    result.data = usersListData.data;
-    return result;
+function getUserList(config) {
+  let result = {
+    code: 200,
+    data: null,
+    msg: '获取成功',
+    time: new Date()
   }
+
+  result.data = usersListData.data;
+  return result;
+}
+
+module.exports = {
+  getUserList: getUserList()
 }

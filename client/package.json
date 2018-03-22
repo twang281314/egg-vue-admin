@@ -27,6 +27,7 @@
     "iview": "^2.11.0",
     "iview-area": "^1.5.16",
     "js-cookie": "^2.2.0",
+    "json-server": "^0.12.1",
     "mockjs": "^1.0.1-beta3",
     "rasterizehtml": "^1.2.4",
     "simplemde": "^1.11.2",
