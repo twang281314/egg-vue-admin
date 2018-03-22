@@ -7,7 +7,7 @@ for (let i = 0; i < count; i++) {
 }
 
 let usersListData = Mock.mock({
-  'data|15': [{
+  'data|25': [{
     id: '@id',
     username: '@name',
     realname: '@last',

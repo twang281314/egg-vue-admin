@@ -7,13 +7,28 @@ const webpackBaseConfig = require('./webpack.base.config.js');
 const fs = require('fs');
 const package = require('../package.json');
 
-fs.open('./build/env.js', 'w', function(err, fd) {
+fs.open('./build/env.js', 'w', function (err, fd) {
     const buf = 'export default "development";';
-    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
+    fs.write(fd, buf, 0, buf.length, 0, function (err, written, buffer) {});
 });
 
 module.exports = merge(webpackBaseConfig, {
     devtool: '#source-map',
+    devServer: {
+        historyApiFallback: true,
+        hot: true,
+        inline: true,
+        progress: true,
+        port: 8080,
+        host: '0.0.0.0',
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3000/',
+                changeOrigin: true,
+                secure: false
+            }
+        }
+    },
     output: {
         publicPath: '/dist/',
         filename: '[name].js',
@@ -33,11 +48,9 @@ module.exports = merge(webpackBaseConfig, {
             filename: '../index.html',
             inject: false
         }),
-        new CopyWebpackPlugin([
-            {
-                from: 'src/views/main-components/theme-switch/theme'
-            }
-        ], {
+        new CopyWebpackPlugin([{
+            from: 'src/views/main-components/theme-switch/theme'
+        }], {
             ignore: [
                 'text-editor.vue'
             ]

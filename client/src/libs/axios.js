@@ -3,7 +3,7 @@ import Axios from 'axios';
 import Qs from 'qs';
 import {Router} from '../router';
 const config = {
-  baseURL: 'http://127.0.0.1:7001',
+  baseURL: 'api',
   timeout: 2000, //超过两秒的请求请用微服务来处理
   withCredentials: true, //是否允许跨域
   headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8', 'X-Requested-With': 'XMLHttpRequest'},

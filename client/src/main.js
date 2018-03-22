@@ -12,7 +12,7 @@ import util from './libs/util';
 import Http from './libs/http';
 import Plugin from './libs/plugin/index';
 import Toast from './libs/toast/';
-import './mock'
+// import './mock'
 
 Vue.use(VueI18n);
 Vue.use(iView);
