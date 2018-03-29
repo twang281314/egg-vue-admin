@@ -47,3 +47,8 @@ $ npm stop
 - app/service/** 用于编写业务逻辑层。
 - app/public/** 用于放置静态资源。
 - app/model/** 用于放置sequelize相关模型。
+
+### 文档
+
+ - Sequelize中文文档：https://itbilu.com/nodejs/npm/VkYIaRPz-.html
+ - Egg文档：https://eggjs.org/zh-cn/intro/
