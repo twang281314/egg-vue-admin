@@ -54,15 +54,15 @@
      <!--添加 Modal 对话框-->
     <Modal v-model="addModal" title="添加用户" class-name="customize-modal-center" @on-cancel="modalCancel()">
       <div>
-        <Form ref="addForm" :model="addForm"  :label-width="80">
-          <Form-item label="帐号" prop="account">
-            <Input v-model="addForm.account" placeholder="请填写帐号"></Input>
+        <Form ref="addForm" :model="addForm"  :rules="ruleValidate"  :label-width="80">
+          <Form-item label="帐号" prop="username">
+            <Input v-model="addForm.username" placeholder="请填写帐号"></Input>
           </Form-item>
           <Form-item label="密码" prop="password">
             <Input type="password" v-model="addForm.password" placeholder="请填写密码(留空将不会修改密码)"></Input>
           </Form-item>
-          <Form-item label="姓名" prop="realName">
-            <Input v-model="addForm.realName" placeholder="请填写姓名"></Input>
+          <Form-item label="姓名" prop="realname">
+            <Input v-model="addForm.realname" placeholder="请填写姓名"></Input>
           </Form-item>
           <Form-item label="手机号" prop="mobile">
             <Input v-model="addForm.mobile" placeholder="请填写手机号"></Input>
@@ -93,6 +93,21 @@
 export default {
     name: 'user_list',
     data(){
+       const validatePassword = (rule, value, callback) => {
+        if ((this.addModal || value) && (value.length < 6 || value.length > 32)) {
+          callback(new Error('密码长度6-32个字符'));
+        }
+        callback();
+      };
+      const validateMobile = (rule, value, callback) => {
+        if (value) {
+          let reg = /^1[34578]\d{9}$/;
+          if (!reg.test(value)) {
+            callback(new Error('手机号码格式不正确'));
+          }
+        }
+        callback();
+      };
       return {
           columns: [
           {
@@ -146,37 +161,37 @@ export default {
           {
             title: '最后登陆',
             key: 'lastLoginTime',
-            width: 135,
+            width: 150,
             align: 'center',
             render: (h, params) => {
               if (params.row.lastLoginTime === '0') {
                 return h('Tag', '从未登陆');
               }
-              return h('div', this.$formatDate(params.row.createTime, 'yyyy-MM-dd h:m'));
+              return h('div', params.row.createTime);
             }
           },
           {
             title: '最后登陆IP',
             key: 'lastLoginIp',
-            width: 135,
+            width: 130,
             align: 'center'
           },
           {
             title: '添加时间',
             key: 'createTime',
-            width: 135,
+            width: 150,
             align: 'center',
             render: (h, params) => {
-              return h('span', this.$formatDate(params.row.createTime, 'yyyy-MM-dd h:m'));
+              return h('span', params.row.createTime);
             }
           },
           {
             title: '最后更新',
             key: 'updateTime',
             align: 'center',
-            width: 135,
+            width: 150,
             render: (h, params) => {
-              return h('span', this.$formatDate(params.row.updateTime, 'yyyy-MM-dd h:m'));
+              return h('span', params.row.updateTime);
             }
           },
           {
@@ -225,37 +240,80 @@ export default {
         pageNumber: 1,
         //添加表单
         addForm: {
-          account: '',
+          username: '',
           password: '',
-          roleId: '',
           mobile: '',
           email: '',
           status: 1,
-          realName: '',
-          desc: '',
-          avatarId: '',
-          avatarUrl: ''
+          realname: '',
+          desc: ''
         },
          //搜索表单
         formSearch: {},
         //新增modal
-        addModal:false
+        addModal:false,
+         //验证规则
+        ruleValidate: {
+          username: [
+            {required: true, message: '帐号不能为空', trigger: 'blur'},
+            {type: 'string', min: 2, message: '帐号不能少于2个字符', trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: '密码不能为空', trigger: 'blur'},
+            {validator: validatePassword, trigger: 'blur'}
+          ],
+          realname: [
+            {type: 'string', min: 2, max: 6, message: '姓名2-6个字符', trigger: 'blur'}
+          ],
+          mobile: [
+            {validator: validateMobile, trigger: 'blur'}
+          ],
+          email: [
+            {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+          ],
+          desc: [
+            {type: 'string', max: 200, message: '备注说明不能超过200字', trigger: 'blur'}
+          ]
+        },
       };
     },
 
     methods: {
+        //取消 modal
+        modalCancel() {
+          this.editModal = false;
+        },
+        //添加数据
+       addSubmit (name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.save('UserAdd', this.addForm);
+          } else {
+            this.$Message.error('表单验证失败!');
+          }
+        });
+       },
+       //获取列表数据
         getData (params) {
           this.request('UserList', params, true).then((res) => {
             console.log(res);
             this.list= res.data;
         });
         },
+        //分页
         changePage(){
 
         },
         //重置表单数据
         handleReset (name) {
           this.$refs[name].resetFields();
+        },
+         //表单搜索
+        search() {
+          let page = 1;
+          this.pageNumber = page;
+          let search = this.formSearch;
+          this.getData({params: search});
         },
         //保存数据方法
         save(url, data) {
@@ -266,7 +324,7 @@ export default {
             this.$Message.success(res.msg);
             //重置数据
             this.$refs['addForm'].resetFields();
-            this.$refs['editForm'].resetFields();
+            //this.$refs['editForm'].resetFields();
             //重新拉取服务端数据
             this.getData();
           } else {

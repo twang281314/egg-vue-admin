@@ -9,12 +9,12 @@ function resolve (dir) {
 }
 module.exports = {
     entry: {
-        main: '@/main',
-        'vender-base': '@/vendors/vendors.base.js',
-        'vender-exten': '@/vendors/vendors.exten.js'
+         main: ["@/main"],
+        'vender-base': ['@/vendors/vendors.base.js'],
+        'vender-exten': ['@/vendors/vendors.exten.js']
     },
     output: {
-        path: path.resolve(__dirname, '../dist/dist')
+        path: path.resolve(__dirname, '../dist')
     },
     module: {
         rules: [

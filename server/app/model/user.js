@@ -1,5 +1,5 @@
 'use strict';
-
+var moment = require('moment');
 module.exports = app => {
     const {
         INTEGER,
@@ -35,7 +35,7 @@ module.exports = app => {
             type: STRING(50),
             allowNull: true,
         },
-        phone: {
+        mobile: {
             type: STRING(20),
             allowNull: true,
         },
@@ -43,16 +43,26 @@ module.exports = app => {
             type: DATE,
             allowNull: false,
             defaultValue: new Date(),
+            get() {
+                return moment(this.getDataValue('createTime')).format('YYYY-MM-DD HH:mm:ss');
+            }
         },
         updateTime: {
             type: DATE,
             allowNull: false,
             defaultValue: new Date(),
+            get() {
+                return moment(this.getDataValue('updateTime')).format('YYYY-MM-DD HH:mm:ss');
+            }
         },
         status: {
             type: INTEGER,
             allowNull: false,
             default: 0
+        },
+        desc: {
+            type: STRING(250),
+            allowNull: true
         },
     }, {
         timestamps: false,

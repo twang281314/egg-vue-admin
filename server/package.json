@@ -11,6 +11,7 @@
     "egg-sequelize": "^3.1.2",
     "lodash": "^4.17.5",
     "md5": "^2.2.1",
+    "moment": "^2.21.0",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.2",
     "sequelize-cli": "^4.0.0"

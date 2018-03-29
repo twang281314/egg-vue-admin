@@ -8,7 +8,7 @@ const methodMap = {
   /** 后台用户列表 **/
   UserList: {url: '/user/list', method: 'get'},
   /** 添加后台用户 **/
-  AdminAddUser: {url: '/user/add', method: 'post'},
+  UserAdd: {url: '/user/add', method: 'post'},
   /** 编辑后台用户 **/
   AdminEditUser: {url: '/user/edit', method: 'post'},
   /** 重置后台用户密码 **/
