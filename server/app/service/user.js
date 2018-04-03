@@ -12,11 +12,28 @@ class UserService extends Service {
         this.ServerResponse = ctx.response.ServerResponse;
     }
 
+    /**
+   * @feature 校验 username email
+   * @param value {String}
+   * @param type {String}
+   * @return ServerResponse.msg
+   */
+  async checkValid(type, value) {
+    if (type.trim()) {
+      
+    }
+    return this.ServerResponse.createByErrorMsg('参数错误');
+  }
+
     async login(username, password) {
 
+        //检验参数
+        const validResponse = await this.checkValid('username', username);
+        if (validResponse.isSuccess()) return validResponse;
+    
         // 检查密码是否正确
         const user = await this.ctx.model.User.findOne({
-            attributes: ['id', 'username', 'email', 'phone'],
+            attributes: ['id', 'username', 'email', 'mobile'],
             where: {
                 username,
                 password: md5(password),

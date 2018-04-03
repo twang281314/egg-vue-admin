@@ -2,6 +2,9 @@
 
 const Controller = require('egg').Controller;
 
+const Parameter = require('parameter');
+const Check = new Parameter();
+
 class UserController extends Controller {
 
     constructor(ctx) {
@@ -13,6 +16,34 @@ class UserController extends Controller {
 
     // 登录
     async login() {
+        const ctx = this.ctx;
+        const createRule = {
+            username: {
+                type: 'string',
+                required: true,
+                allowEmpty: false,
+                max: 20
+            },
+            password: {
+                type: 'string',
+                required: true,
+                allowEmpty: false,
+                max: 20,
+                min: 6
+            }
+        };
+        let errors = [];
+        try {
+            errors = ctx.validate(createRule, this.ctx.request.body);
+        } catch (error) {
+            errors = error.errors;
+        }
+
+        if (errors) {
+            this.ctx.body = this.ServerResponse.createByErrorMsg(errors[0].field + ' ' + errors[0].code + ' ' + errors[0].message);
+            return;
+        }
+
         const {
             username,
             password
@@ -32,9 +63,9 @@ class UserController extends Controller {
         this.ctx.body = respponse;
     }
 
-    async list(){
+    async list() {
         const users = await this.ctx.service.user.list();
-        this.ctx.body = this.ServerResponse.createBySuccessMsgAndData('获取成功',users);
+        this.ctx.body = this.ServerResponse.createBySuccessMsgAndData('获取成功', users);
     }
 
 }
