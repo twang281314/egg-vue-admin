@@ -2,7 +2,7 @@
 const methodMap = {
 
   /** 管理登陆接口 **/
-  AdminLogin: {url: '/passport/login', method: 'post'},
+  AdminLogin: {url: '/user/login', method: 'post'},
   /** 用户登陆解锁 **/
   AdminUnlock: {url: '/passport/unlock', method: 'post'},
   /** 后台用户列表 **/
