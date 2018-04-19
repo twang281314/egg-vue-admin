@@ -3,6 +3,7 @@
 const Controller = require('egg').Controller;
 
 const Parameter = require('parameter');
+const jwt = require('jsonwebtoken');
 const Check = new Parameter();
 
 class UserController extends Controller {
@@ -16,21 +17,24 @@ class UserController extends Controller {
 
     // 登录
     async login() {
+        const token = jwt.sign({
+            foo: 'bar'
+        }, 'shhhhh');
         const ctx = this.ctx;
         const createRule = {
             username: {
                 type: 'string',
                 required: true,
                 allowEmpty: false,
-                max: 20
+                max: 20,
             },
             password: {
                 type: 'string',
                 required: true,
                 allowEmpty: false,
                 max: 20,
-                min: 6
-            }
+                min: 6,
+            },
         };
         let errors = [];
         try {
@@ -46,7 +50,7 @@ class UserController extends Controller {
 
         const {
             username,
-            password
+            password,
         } = this.ctx.request.body;
 
         const response = await this.ctx.service.user.login(username, password);
@@ -54,6 +58,7 @@ class UserController extends Controller {
         if (response.isSuccess()) {
             this.session.currentUser = response.getData();
         }
+
         this.ctx.body = response;
     }
 
